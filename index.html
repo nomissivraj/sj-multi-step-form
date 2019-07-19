@@ -15,7 +15,8 @@
 </head>
 <body>
     <form>
-        <fieldset class="pp-form-area__section">
+        <div class="sj-step-progress"></div>
+        <fieldset class="sj-step">
             <legend>Supplier History</legend>
             <label>Label</label>
             <input type="text">
@@ -27,7 +28,7 @@
             <input type="text">
         </fieldset>
 
-        <fieldset class="pp-form-area__section">
+        <fieldset class="sj-step">
             <legend>Supplier Performance</legend>
             <label>Label</label>
             <input type="text">
@@ -39,7 +40,7 @@
             <input type="text">
         </fieldset>
 
-        <fieldset class="pp-form-area__section">
+        <fieldset class="sj-step">
             <legend>Supplier Spend</legend>
             <label>Label</label>
             <input type="text">
@@ -51,7 +52,7 @@
             <input type="text">
         </fieldset>
 
-        <fieldset class="pp-form-area__section">
+        <fieldset class="sj-step">
             <legend>Supplier Contracts</legend>
             <label>Label</label>
             <input type="text">
@@ -62,6 +63,8 @@
             <label>Label</label>
             <input type="text">
         </fieldset>
+        <button type="button" data-formstep-control="previous">Previous</button>
+        <button type="button" data-formstep-control="next">Next</button>
     </form>
 </body>
 </html>
