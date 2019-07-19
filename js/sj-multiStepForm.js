@@ -19,6 +19,8 @@ var sjMultiStepForm = {};
         self.showCurrentStep(currentStep);
         self.initControls(stepControls);
         self.stepProgress();
+        self.controlVisibility();
+
     }
 
     self.showCurrentStep = (currentStep) => {
@@ -36,13 +38,27 @@ var sjMultiStepForm = {};
             el.addEventListener('click', () => {
                 let direction = el.getAttribute(stepControls);
                 if (direction == 'next') {
-                    self.next();
+                    self.next(el);
+                    
                 }
                 if (direction == 'previous') {
-                    self.prev();
+                    self.prev(el);
                 }
             });
         });
+    }
+
+    self.controlVisibility = () => {
+        console.log(currentStep)
+        let next = $('['+stepControls+'=next]')[0],
+            prev = $('['+stepControls+'=previous]')[0];
+        if (currentStep === 0) {
+            prev.style.display = 'none';
+        } else prev.style.display = 'inline';
+
+        if (currentStep === steps.length -1) {
+            next.style.display = 'none';
+        } next.style.display = 'inline';
     }
 
     self.stepProgress = () => {
@@ -51,16 +67,18 @@ var sjMultiStepForm = {};
         $(progress).html(string);
     }
 
-    self.next = () => {
+    self.next = (el) => {
         if (currentStep == steps.length -1) return;
         currentStep++;
+        self.controlVisibility();
         self.showCurrentStep(currentStep);
         self.stepProgress();
     }
 
-    self.prev = () => {
+    self.prev = (el) => {
         if (currentStep == 0) return;
         currentStep--;
+        self.controlVisibility();
         self.showCurrentStep(currentStep);
         self.stepProgress();
     }
