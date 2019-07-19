@@ -1,15 +1,7 @@
 $(window).on('load', () => {
-    sjMultiStepForm.init(opts);
-
-    let steps = $('.sj-step');
-        steps.each((index, el) => {
-            $(this).hide();
-        });
+    sjMultiStepForm.init();
 });
 
-let opts = {
-    stepClass: '.sj-step',
-}
 
 var sjMultiStepForm = {};
 ((self) => {
@@ -20,7 +12,10 @@ var sjMultiStepForm = {};
         stepControls = 'data-formstep-control';
 
     self.init = (opts) => {
-        className = opts.stepClass;
+        if (opts) {
+            className = opts.className ? opts.stepClass: null;
+        }
+        
         self.showCurrentStep(currentStep);
         self.initControls(stepControls);
         self.stepProgress();
