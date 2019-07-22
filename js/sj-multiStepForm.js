@@ -49,16 +49,18 @@ var sjMultiStepForm = {};
     }
 
     self.controlVisibility = () => {
-        console.log(currentStep)
+        
         let next = $('['+stepControls+'=next]')[0],
             prev = $('['+stepControls+'=previous]')[0];
         if (currentStep === 0) {
-            prev.style.display = 'none';
-        } else prev.style.display = 'inline';
-
+            //prev.style.display = 'none';
+            prev.setAttribute('disabled', true)
+        } else prev.removeAttribute('disabled') //prev.style.display = 'inline';
+        
         if (currentStep === steps.length -1) {
-            next.style.display = 'none';
-        } next.style.display = 'inline';
+            //next.style.display = 'none';
+            next.setAttribute('disabled', true)
+        } else next.removeAttribute('disabled')//next.style.display = 'inline';
     }
 
     self.stepProgress = () => {

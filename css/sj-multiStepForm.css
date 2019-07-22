@@ -1,0 +1,7 @@
+[data-formstep-control=next] {
+    float: right;
+}
+
+[data-formstep-control=previous] {
+    float: left;
+}
