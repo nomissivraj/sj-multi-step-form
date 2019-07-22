@@ -51,16 +51,21 @@ var sjMultiStepForm = {};
     self.controlVisibility = () => {
         
         let next = $('['+stepControls+'=next]')[0],
-            prev = $('['+stepControls+'=previous]')[0];
+            prev = $('['+stepControls+'=previous]')[0],
+            submit = $('['+stepControls+'=submit]')[0];
         if (currentStep === 0) {
-            //prev.style.display = 'none';
-            prev.setAttribute('disabled', true)
-        } else prev.removeAttribute('disabled') //prev.style.display = 'inline';
+            prev.style.display = 'none';
+            //prev.setAttribute('disabled', true)
+        } else prev.style.display = 'inline' //prev.removeAttribute('disabled');
         
         if (currentStep === steps.length -1) {
-            //next.style.display = 'none';
-            next.setAttribute('disabled', true)
-        } else next.removeAttribute('disabled')//next.style.display = 'inline';
+            //next.setAttribute('disabled', true)
+            next.style.display = 'none';
+            submit.style.display = 'inline';
+        } else {
+            submit.style.display = 'none';
+            next.style.display = 'inline' //next.removeAttribute('disabled');
+        }
     }
 
     self.stepProgress = () => {

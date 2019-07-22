@@ -2,6 +2,10 @@
     float: right;
 }
 
+[data-formstep-control=submit] {
+    float: right;
+}
+
 [data-formstep-control=previous] {
     float: left;
 }
