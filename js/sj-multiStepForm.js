@@ -66,6 +66,12 @@ var sjMultiStepForm = {};
             submit.style.display = 'none';
             next.style.display = 'inline' //next.removeAttribute('disabled');
         }
+        if (steps[currentStep].getAttribute('data-form-step-title')) {
+            let title = steps[currentStep].getAttribute('data-form-step-title');
+            console.log('title',title);
+            $('#sj-step-title').html(title);
+        } else $('#sj-step-title').html('');
+        console.log(steps[currentStep])
     }
 
     self.stepProgress = () => {
