@@ -5,6 +5,10 @@ $(window).on('load', () => {
     sjMultiStepForm.init(opts);
 });
 
+$(window).on('resize', () => {
+    sjMultiStepForm.updateDimensions();
+});
+
 
 var sjMultiStepForm = {};
 ((self) => {
@@ -81,36 +85,53 @@ var sjMultiStepForm = {};
         //console.log(steps[currentStep])
     }
 
+    let contWidth = $(progress).width();
+        let elWidth,
+            totalElWidth,
+            availWidth,
+            padding;
+
     self.stepProgress = () => {
         let curStep = currentStep+1
         let string = "Step " + curStep + " of " +steps.length;
-        console.log(stepMode)
         if (stepMode == 'number') {
             $(progress).html(string);
         } else if (stepMode == 'timeline') {
-            let contWidth = $(progress).width();
-            console.log('container width:',contWidth)
-            let elWidth = 50;
-            let totalElWidth = elWidth * steps.length;
-            let availWidth = contWidth - totalElWidth;
-    
-            let padding = availWidth / (steps.length * 2);
+            self.calcDimensions();
                     
-            console.log('Available space (cont width - el width):',availWidth, 'padding:',padding);
+            //console.log('Available space (cont width - el width):',availWidth, 'padding:',padding);
             for (let i = 0; i < steps.length; i++) {
                 // Make DOM elements
                 let div = document.createElement('div');
                 let text = document.createTextNode(i+1);
                 
-                // Style DOM elements
-                div.setAttribute('style', 'background: grey; color: #fff; display: inline-block; width: '+elWidth+'px;  margin-left:'+padding+'px; margin-right:'+padding+'px; text-align: center;')
-                
+                // Style & Attr DOM elements
+                div.setAttribute('style', 'background: grey; color: #fff; display: inline-block; height:'+elWidth+'px; width: '+elWidth+'px; border-radius: 50%; margin-left:'+padding+'px; margin-right:'+padding+'px; text-align: center;')
+                div.setAttribute('class', 'test')
                 // Append DOM elements
                 div.appendChild(text);
                 $(progress).append(div)
             }
         }
-       
+    }
+
+    self.calcDimensions = () => {
+        contWidth = $(progress).width();
+        elWidth = 30;
+        totalElWidth = elWidth * steps.length;
+        availWidth = contWidth - totalElWidth;
+        padding = availWidth / (steps.length * 2);
+        return {width: elWidth, padding: padding}
+    }
+
+    self.updateDimensions = () => {
+        let d = self.calcDimensions();
+         $('.test').each(function () {
+             $(this).css({
+                'margin-left': d.padding+'px',
+                'margin-right': d.padding+'px'
+            })
+         });
     }
 
     self.next = (el) => {
