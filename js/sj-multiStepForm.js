@@ -1,5 +1,8 @@
 $(window).on('load', () => {
-    sjMultiStepForm.init();
+    let opts = {
+        stepMode: 'timeline'
+    }
+    sjMultiStepForm.init(opts);
 });
 
 
@@ -9,12 +12,13 @@ var sjMultiStepForm = {};
         steps,
         className = '.sj-step',
         progress = '.sj-step-progress',
-        stepControls = 'data-formstep-control';
+        stepControls = 'data-formstep-control',
+        stepMode = 'number';
 
     self.init = (opts) => {
-        if (opts) {
-            className = opts.className ? opts.stepClass: null;
-        }
+        // If options exist overwrite default otherwise do nothing (null)
+        opts.stepMode ? stepMode = opts.stepMode: null;
+        opts.className ? className = opts.className: null;
         
         self.showCurrentStep(currentStep);
         self.initControls(stepControls);
@@ -68,16 +72,45 @@ var sjMultiStepForm = {};
         }
         if (steps[currentStep].getAttribute('data-form-step-title')) {
             let title = steps[currentStep].getAttribute('data-form-step-title');
-            console.log('title',title);
+            $('#sj-step-title').css('display','inline');
             $('#sj-step-title').html(title);
-        } else $('#sj-step-title').html('');
-        console.log(steps[currentStep])
+        } else {
+            $('#sj-step-title').html('');
+            $('#sj-step-title').css('display','none');
+        }
+        //console.log(steps[currentStep])
     }
 
     self.stepProgress = () => {
         let curStep = currentStep+1
         let string = "Step " + curStep + " of " +steps.length;
-        $(progress).html(string);
+        console.log(stepMode)
+        if (stepMode == 'number') {
+            $(progress).html(string);
+        } else if (stepMode == 'timeline') {
+            let contWidth = $(progress).width();
+            console.log('container width:',contWidth)
+            let elWidth = 50;
+            let totalElWidth = elWidth * steps.length;
+            let availWidth = contWidth - totalElWidth;
+    
+            let padding = availWidth / (steps.length * 2);
+                    
+            console.log('Available space (cont width - el width):',availWidth, 'padding:',padding);
+            for (let i = 0; i < steps.length; i++) {
+                // Make DOM elements
+                let div = document.createElement('div');
+                let text = document.createTextNode(i+1);
+                
+                // Style DOM elements
+                div.setAttribute('style', 'background: grey; color: #fff; display: inline-block; width: '+elWidth+'px;  margin-left:'+padding+'px; margin-right:'+padding+'px; text-align: center;')
+                
+                // Append DOM elements
+                div.appendChild(text);
+                $(progress).append(div)
+            }
+        }
+       
     }
 
     self.next = (el) => {
