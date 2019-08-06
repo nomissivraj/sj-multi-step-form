@@ -9,3 +9,11 @@
 [data-formstep-control=previous] {
     float: left;
 }
+
+.step-inactive {
+    display: none;
+}
+
+.step-active {
+    display: block;
+}
