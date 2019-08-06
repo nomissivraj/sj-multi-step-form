@@ -1,36 +1,57 @@
 var validate = {};
 
 (function (self) {
+    let stepValid = true;
+
     self.init = function () {
         $('input').each(function () {
-            $(this).on('blur', function () {
-                validateInput($(this))
-            });
+            let type = $(this).attr('type');
+            //console.log(type, $(this))
+
+            switch (type) {
+                case 'radio':
+                case 'checkbox':
+                    $(this).on('click', function () {
+                        self.input($(this))
+                    });
+                    break;
+                default:
+                    $(this).on('blur', function () {
+                        self.input($(this))
+                    });
+                    break;
+            }
+
         });
 
         $('textarea').each(function () {
             $(this).on('blur', function () {
-                validateInput($(this))
+                self.input($(this))
             });
         });
 
         $('select').each(function () {
             $(this).on('blur', function () {
-                validateInput($(this))
+                self.input($(this))
+            });
+            $(this).on('change', function () {
+                self.input($(this))
             });
         });
     }
-
-    self.validateInput = function (el) {
+    
+    self.input = function (el)  {
         let target = el.attr('data-validation-target');
-
+        
+        //If valid
         if (el[0].checkValidity()) {
             $('[data-validation-output=' + target + ']').removeClass('invalid');
             $('#' + target + '-message').remove();
         } else {
-
+            // Else if invalid
             let container = $('[data-validation-output=' + target + ']');
             container.addClass('invalid');
+            stepValid = false;
             if (container[0]) {
                 // Dynamic
                 let textCont = document.createElement('span');
@@ -46,22 +67,45 @@ var validate = {};
         }
     }
 
-    self.validateStep = function () {
+    self.step = function () {
+        stepValid = true;
         let inputs = [];
         $('.step-active input').each(function () {
-            //console.log($(this)[0].checkValidity())
+            inputs.push($(this));
+        })
+
+        $('.step-active textarea').each(function () {
             inputs.push($(this));
         })
 
         $('.step-active select').each(function () {
-            //console.log($(this)[0].checkValidity())
             inputs.push($(this));
         })
-        console.log(inputs);
+        //console.log(inputs);
+        
+        for (let i = 0; i < inputs.length; i++) {
+            self.input(inputs[i]);
+        }
+        return stepValid;
+    }
+
+    self.form = function () {
+        let inputs = [];
+        $('form input').each(function () {
+            inputs.push($(this));
+        })
+
+        $('form textarea').each(function () {
+            inputs.push($(this));
+        })
+
+        $('form select').each(function () {
+            inputs.push($(this));
+        })
+        //console.log(inputs);
 
         for (let i = 0; i < inputs.length; i++) {
-            //console.log(inputs[i])
-            self.validateInput(inputs[i]);
+            self.input(inputs[i]);
         }
     }
 })(validate);

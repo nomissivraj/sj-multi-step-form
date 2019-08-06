@@ -53,6 +53,11 @@ var sjMultiStepForm = {};
                     self.prev(el);
                 }
             });
+
+            $('button[type=submit]').on('click', function (e) {
+                let validity = validate.step()
+                if (validity === false) return;
+            });
         });
     }
 
