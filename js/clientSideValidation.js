@@ -19,6 +19,12 @@ var validate = {};
                     $(this).on('blur', function () {
                         self.input($(this))
                     });
+                    $(this).on('input', function () {
+                        self.input($(this))
+                    });
+                    $(this).on('change', function () {
+                        self.input($(this))
+                    });
                     break;
             }
 
@@ -26,6 +32,9 @@ var validate = {};
 
         $('textarea').each(function () {
             $(this).on('blur', function () {
+                self.input($(this))
+            });
+            $(this).on('input', function () {
                 self.input($(this))
             });
         });
