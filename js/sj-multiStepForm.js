@@ -111,6 +111,8 @@ var sjMultiStepForm = {};
                 // Append DOM elements
                 div.appendChild(text);
                 $(progress).append(div)
+
+                // Steps need to be clickable?
             }
         }
     }
@@ -151,11 +153,15 @@ var sjMultiStepForm = {};
     }
 
     self.hide = (el) => {
-        el.style.display = "none";
+        el.classList.add('step-inactive')
+        el.classList.remove('step-active')
+        el.setAttribute('disabled', 'true');
     }
 
     self.show = (el) => {
-        steps[el].style.display = "block";
+        steps[el].classList.add('step-active')
+        steps[el].classList.remove('step-inactive')
+        steps[el].removeAttribute('disabled');
     }
 
 })(sjMultiStepForm);
