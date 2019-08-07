@@ -56,7 +56,8 @@ var validate = {};
         });
     }
 
-    self.validateInputGroup = function (group) {
+    self.validateInputGroup = function (group, e) {
+       
         console.log('valinputgroup')
         let checked = [],
             amountRequired,
@@ -72,6 +73,7 @@ var validate = {};
             self.valid(target);
         } else {
             console.log(this, $(this))
+            if (e) e.preventDefault();
             self.invalid($(this), target)
         }
                 
@@ -104,6 +106,7 @@ var validate = {};
             let textCont = document.createElement('span');
             textCont.setAttribute('id', target + '-message');
             textCont.setAttribute('class', 'validation-message validation-message--invalid');
+            console.log(el.attr('data-validation-message'))
             let message = el.attr('data-validation-message') === undefined ? 'Input invalid, please complete correctly' : el.attr('data-validation-message');
             let text = document.createTextNode(message);
 
@@ -120,12 +123,9 @@ var validate = {};
             if ($(this).attr('data-checkbox-group')) {
                 let groupName = $(this).attr('data-checkbox-group');
                 if ($(this).attr('data-checkbox-required')) {
-
-                    $(this).on('click', function () {
-                        self.validateInputGroup($('[name=' + groupName + ']'));
-                    });
+                    self.validateInputGroup($('[name=' + groupName + ']'));
                 }
-            } else inputs.push($(this));
+            }  else inputs.push($(this));
         })
 
         $('.step-active textarea').each(function () {
@@ -143,14 +143,15 @@ var validate = {};
         return stepValid;
     }
 
-    self.form = function () {
+    self.form = function (e) {
+        
         let inputs = [];
         $('form input').each(function () {
             if ($(this).attr('data-checkbox-group')) {
+                
                 let groupName = $(this).attr('data-checkbox-group');
-
                 if ($(this).attr('data-checkbox-required')) {
-                    self.validateInputGroup($('[name=' + groupName + ']'));
+                    self.validateInputGroup($('[name=' + groupName + ']'), e);
                 }
             } else inputs.push($(this));
         })
